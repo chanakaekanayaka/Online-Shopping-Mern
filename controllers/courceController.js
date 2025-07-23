@@ -26,7 +26,7 @@ export function addCource(req,res){
 
 }
 
-export function displayCource(req,res){
+/*export function displayCource(req,res){
 
     
    
@@ -45,4 +45,24 @@ export function displayCource(req,res){
         }
     )
 
-}
+}*/
+
+export async function displayCource(req,res){
+
+    try{
+         const courceDetails = await Course.find()
+         res.json(courceDetails);
+         
+    }catch(error){
+        res.status(500).json(
+            {
+                message : "Course details not available",
+                error : error.message
+            }
+        )
+
+    }
+ 
+   
+} 
+    
