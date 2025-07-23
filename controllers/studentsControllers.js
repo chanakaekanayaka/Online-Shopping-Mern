@@ -56,7 +56,7 @@ import Student from "../models/students.js"
 
     }
 
-  /* export function displayStudent(req,res){
+  export function displayStudent(req,res){
         Student.find().then(
             
             (students)=>{
@@ -70,9 +70,9 @@ import Student from "../models/students.js"
             }
         )
 
-    }*/
+    }
 
-         export async function displayStudent(req,res){
+       /*  export async function displayStudent(req,res){
 
         try{
             const students = await Student.find()
@@ -91,7 +91,7 @@ import Student from "../models/students.js"
         };
 
 
-     }   
+     }   */
 
 
 
