@@ -168,3 +168,34 @@ export async function updateProduct(req,res){
     }
    
 }
+
+export async function getProductInfo(req,res){
+    try{
+    const productid = req.params.productID
+    const product = await Product.findOne({productID : productid});
+
+    if(product == null){
+        res.status(404).json({message : "Product is not found"})
+    }
+
+    if(isAdmin(req)){
+        res.json(product)
+    }
+    else{
+        if(product.isAvilable){
+            res.json(product)
+        }
+        else{
+            res.status(404).json({message : "Product is not found"})
+        }
+    }
+
+    }catch(error){
+        console.error("Error fetching product info",error)
+        res.status(404).json({message : "Error fetching product"})
+
+    }
+
+  
+
+}
