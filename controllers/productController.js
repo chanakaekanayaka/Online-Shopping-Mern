@@ -71,6 +71,7 @@ export async function getProduct(req,res){
         if(!isAdmin(req)){
             const products = await Product.find({isAvilable : true});
             res.json(products)
+            
         }
        
        
@@ -87,5 +88,45 @@ export async function getProduct(req,res){
     }
     
 
+
+}
+
+export async function deleteProduct(req,res){
+    
+    if(!isAdmin(req)){
+        res.status(401).json(
+            {
+                message : "Un othorized user.please login as admin"
+            }
+        )
+        return
+    }
+
+    try{
+        const ProductID = req.params.productID;
+
+        await Product.deleteOne(
+            {
+                productID : ProductID
+            }
+        )
+
+        res.json(
+            {
+                message : "Product deleted sucessfully"
+            }
+        )
+
+    }catch(error){
+        res.error("Product was not found ",error)
+        res.status(500).json(
+            {
+                message : "Failed to delete product"
+            }
+        )
+        return
+
+
+    }
 
 }
