@@ -4,7 +4,7 @@ const productSchema = new mongoose.Schema({
     productID : {
         type : String,
         required : true,
-        uniqe : true
+        unique : true
     },
     productName : {
         type : String,
@@ -16,7 +16,7 @@ const productSchema = new mongoose.Schema({
     },
     labelledPrice : {
         type : Number,
-        required : true
+        required : true,
     },
     price : {
         type : Number,
@@ -27,7 +27,7 @@ const productSchema = new mongoose.Schema({
         default : ["/default-product.jpg"]
     },
     description : {
-        trpe : String,
+        type : String,
         required : true
     },
     stock : {

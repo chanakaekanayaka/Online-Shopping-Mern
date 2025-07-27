@@ -6,6 +6,7 @@ import studentRouter from "./routers/studentsRouter.js";
 import courseRouter from "./routers/courseRouters.js";
 import userRouter from "./routers/userRouter.js";
 import jwt, { decode } from "jsonwebtoken";
+import productRouter from "./routers/productRouter.js";
 
 const app=express()
 
@@ -59,7 +60,7 @@ app.use(
     }
 )
  
-const ConnectionString="mongodb+srv://admin:123@cluster0.i6sbhsl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+const ConnectionString="mongodb+srv://admin:123@cluster0.i6sbhsl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 mongoose.connect(ConnectionString).then(
     ()=>{
@@ -76,6 +77,8 @@ app.use("/students",studentRouter);
 app.use("/courses",courseRouter);
 
 app.use("/users",userRouter);
+
+app.use("/products",productRouter);
 
 
 
