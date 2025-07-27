@@ -130,3 +130,41 @@ export async function deleteProduct(req,res){
     }
 
 }
+
+
+export async function updateProduct(req,res){
+    if(!isAdmin(req)){
+        res.status(403).json({
+            message : "Please login as admin"
+        })
+         return
+    }
+
+    const data = req.body
+    const productID = req.params.productID
+    data.ProductID = productID
+
+    try{
+
+        await Product.updateOne(
+            {
+                productID : productID
+            },data
+        )
+
+        res.json({
+            message : "Product update sucessfully"
+        })
+
+    }catch(error){
+        console.error("Product update failed",eror)
+        res.status(500).json(
+            {
+                message : "Product update unsucessful"
+            }
+        )
+        return 
+
+    }
+   
+}
