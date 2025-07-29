@@ -12,7 +12,7 @@ import Student from "../models/students.js"
             return
         }
 
-        if(req.user.role != "user"){
+        if(req.user.role != "admin"){
             res.status(403).json(
                 {
                     message : "please log in as a admin"

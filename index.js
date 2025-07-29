@@ -7,6 +7,8 @@ import courseRouter from "./routers/courseRouters.js";
 import userRouter from "./routers/userRouter.js";
 import jwt, { decode } from "jsonwebtoken";
 import productRouter from "./routers/productRouter.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app=express()
 
@@ -27,7 +29,7 @@ app.use(
             const token = value.replace("Bearer ","")
 
             jwt.verify(token,
-                "cha-1993",
+                process.env.JWT_SECRET,
                 (err,decode)=>{
                     
                     if(decode == null){
@@ -60,7 +62,7 @@ app.use(
     }
 )
  
-const ConnectionString="mongodb+srv://admin:123@cluster0.i6sbhsl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const ConnectionString=process.env.MONGO_URL;
 
 mongoose.connect(ConnectionString).then(
     ()=>{
@@ -76,9 +78,9 @@ app.use("/students",studentRouter);
 
 app.use("/courses",courseRouter);
 
-app.use("/users",userRouter);
+app.use("/api/users",userRouter);
 
-app.use("/products",productRouter);
+app.use("/api/products",productRouter);
 
 
 
