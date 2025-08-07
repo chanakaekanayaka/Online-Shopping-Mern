@@ -56,7 +56,7 @@ export async function displayCource(req,res){
     }catch(error){
         res.status(500).json(
             {
-                message : "Course details not available",
+                message : "Course details is not available",
                 error : error.message
             }
         )
