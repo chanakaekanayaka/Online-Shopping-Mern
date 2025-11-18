@@ -62,10 +62,10 @@ export async function getProduct(req,res){
         
 
         if(isAdmin(req)){
+
             const products =await Product.find();
             return res.json(products)
             
-
         }
 
         if(!isAdmin(req)){
@@ -157,8 +157,8 @@ export async function updateProduct(req,res){
         })
 
     }catch(error){
-        console.error("Product update failed",eror)
-        res.status(500).json(
+        console.error("Product update failed",error)
+        res.status(500).json( 
             {
                 message : "Product update unsucessful"
             }
