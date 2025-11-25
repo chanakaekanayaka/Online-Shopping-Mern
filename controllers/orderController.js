@@ -85,12 +85,31 @@ export async function createOrder(req,res){
 
     }
 
+}
 
 
+export async function getOrders(req,res) {
 
+    if(req.user == null){
+        res.json(401).json({message:"Please login to view orders"})
+        return;
+    }
 
+    try{
 
+        if(req.user.role == "admin"){
+            const orders = await order.find().sort({date: -1})
+            res.json(orders)
+        }else{
+            const orders = await order.find({email:req.user.email})
+            res.json(orders)
+        }
 
+    }catch(error){
 
+        console.error("Error fetching orders:",error)
+        res.status(500).json({message:"Faild to fetch orders"})
 
+    }
+    
 }
