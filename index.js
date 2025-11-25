@@ -1,9 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
-import Student from "./models/students.js";
-import studentRouter from "./routers/studentsRouter.js";
-import courseRouter from "./routers/courseRouters.js";
+
 import userRouter from "./routers/userRouter.js";
 import jwt, { decode } from "jsonwebtoken";
 import productRouter from "./routers/productRouter.js";

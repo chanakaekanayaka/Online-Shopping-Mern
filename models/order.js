@@ -26,7 +26,7 @@ const orderSchema =new mongoose.Schema(
         required : true
 
     },
-    statue : {
+    status : {
         type : String,
         default : "pending",
     },
@@ -36,10 +36,10 @@ const orderSchema =new mongoose.Schema(
     },
     items : [ 
         {
-        productId : {
-            type : String,
-            reuired : true
-        },
+        productId: {
+        type: String,
+        required: true    
+      },
         name : {
             type : String,
             required : true
@@ -64,7 +64,14 @@ const orderSchema =new mongoose.Schema(
     notes : {
         type : String,
         default : "No additional notes"
+    },
+
+    total :{
+        type: Number,
+        required : true,
+        default:0
     }
+
     
     }
  

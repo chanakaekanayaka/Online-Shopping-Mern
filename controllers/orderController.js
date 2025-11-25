@@ -1,16 +1,19 @@
 import order from "../models/order.js";
-import User from "../models/users.js";
+import Product from "../models/product.js";
+
 
 export async function createOrder(req,res){
 
-    if(req.user == null){
+    try{
+
+            if(req.user == null){
         res.status(401).json({message : "please login to create a order"})
         return;
     }
 
     const latestOrder = await order.find().sort({date : -1}).limit(1)
 
-     let orderID = "CBC00202"
+     let orderId = "CBC00202"
 
      if(latestOrder.length > 0){
         //if order exists CBC00635
@@ -19,22 +22,54 @@ export async function createOrder(req,res){
         const latestOrderIdInInteger = parseInt(latestOrderIdWithoutprefix)//635
         const newOrderIdInInteger = latestOrderIdInInteger +1 //636
         const newOrderIdWithoutPrefix = newOrderIdInInteger.toString().padStart(5, '0'); //00636
-        orderID = "CBC"+newOrderIdWithoutPrefix; //CBC00636
+        orderId = "CBC"+newOrderIdWithoutPrefix; //CBC00636
 
      }
 
-     const order = new order(
+     const items =[];
+     let total = 0;
+     if(req.body.items!==null && Array.isArray(req.body.items)){
+        
+        for(let i=0 ; i<req.body.items.length ; i++){
+            let item = req.body.items[i]
+
+            let product = await Product.findOne({ productID: item.productId});
+
+            if(product == null){
+               return res.status(400).json({message:"Invalid product "})
+                
+            }
+            items[i]={
+                productId: product.productID,
+                name:product.productName,
+                image: product.image[0],
+                price:product.price,
+                qty:item.qty
+                
+
+            }
+
+            total += product.price *item.qty;
+
+        }
+     }
+
+
+
+     const Order = new order(
         {
-            orderID : orderID,
-            email : req.body.email,
-            name : req.body.name,
+            orderID : orderId, 
+            email : req.user.email,
+            name : req.user.firstName+ " "+req.user.lastName,
             address : req.body.address,
             phone : req.body.phone,
-            items : [],
+            items : items,
+            total: total,
+            
         }
-     )
+     );
 
-     const result = await order.save();
+     const result = await Order.save();
 
      res.json(
         {
@@ -42,6 +77,15 @@ export async function createOrder(req,res){
             result : result
         }
      );
+
+    }catch(error){
+
+        console.error("Error creating order" , error)
+        res.status(500).json({message:"Failed to create order"})
+
+    }
+
+
 
 
 
