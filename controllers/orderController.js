@@ -89,6 +89,8 @@ export async function createOrder(req,res){
 
 
 export async function getOrders(req,res) {
+    const page = parseInt(req.params.page) || 1;
+    const limit = parseInt(req.params.limit) || 10;
 
     if(req.user == null){
         res.json(401).json({message:"Please login to view orders"})
@@ -98,11 +100,23 @@ export async function getOrders(req,res) {
     try{
 
         if(req.user.role == "admin"){
-            const orders = await order.find().sort({date: -1})
-            res.json(orders)
+            const orderCount = await order.countDocuments();
+
+            const totalpages = Math.ceil(orderCount / limit);
+
+            const orders = await order.find().skip((page-1)*limit).limit(limit).sort({date: -1})
+            res.json({
+                orders:orders,
+                totalpages:totalpages,
+            });
         }else{
-            const orders = await order.find({email:req.user.email})
-            res.json(orders)
+            const orderCount = await order.countDocuments({email: req.user.email});
+            const totalpages = Math.ceil(orderCount / limit);
+            const orders = await order.find({email:req.user.email}).skip((page-1)*limit).limit(limit).sort({date:-1});
+            res.json({
+                orders:orders,
+                totalpages: totalpages,
+            })
         }
 
     }catch(error){
